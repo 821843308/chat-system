@@ -6,6 +6,7 @@ chatWindow::chatWindow()
 void chatWindow::init()
 {
     initscr();
+    curs_set(0);
 }
 WINDOW* chatWindow::creat_win(const int &h,const int &w,const int &y,const int &x)
 {
@@ -19,35 +20,40 @@ void chatWindow::win_refresh(WINDOW *_win)
     wrefresh(_win);
 }
 
-/* void chatWindow::clear_win_line(WINDOW *_win,int begin,int num) */
-/* { */
-/*     while(num--) */
-/*     { */
-/*         wmove(_win,begin++,0); */
-/*         wclrtoeol(_win);//将当前位置到窗口低端的所有字符清除 */
-/*     } */
-/* } */
+void chatWindow::clear_win_line(WINDOW *_win,int begin,int num)
+{
+    while(num--)
+    {
+        wmove(_win,begin++,0);
+        wclrtoeol(_win);//将当前位置到窗口低端的所有字符清除
+    }
+}
+
 void chatWindow::put_str_to_header(std::string &_str)
 {
     int step = 5;
+    int y,x;
+    getmaxyx(header,y,x);
     while(1)
     {
-        mvwaddstr(this->header,LINES/20,step++,_str.c_str());
-        wrefresh(this->header);
+        mvwaddstr(header,y/2,step++,_str.c_str());
+        wrefresh(header);
         step %=(COLS-5-_str.size());
         if(step == 0)
             step = 5;
         sleep(1);
 
-        wmove(this->header,LINES/20,1);
-        wclrtoeol(this->header);//将当前位置到这一行末所以字符全清除
+        wmove(header,y/2,1);
+        wclrtoeol(header);//将当前位置到这一行末所以字符全清除
         /* wclrtobot(this->header);//将当前位置到窗口低端的所有字符清除 */
-        box(this->header,0,0);
+        box(header,0,0);
     }
 }
+
 void chatWindow::put_str_to_win(WINDOW *_win,int y,int x,std::string &_str)
 {
     mvwaddstr(_win,y,x,_str.c_str());
+    wrefresh(_win);
 }
 
 void chatWindow::get_str_from_win(WINDOW *_win,std::string&_out)
@@ -72,7 +78,7 @@ void chatWindow::draw_header()
     int y = 0;
     int x = 0;
     this->header = creat_win(h,w,y,x);
-    this->win_refresh(this->header);
+    this->win_refresh(header);
 }
 
 void chatWindow::draw_output()
@@ -82,7 +88,7 @@ void chatWindow::draw_output()
     int y = LINES/10;
     int x = 0;
     this->output = creat_win(h,w,y,x);
-    this->win_refresh(this->output);
+    this->win_refresh(output);
 
 }
 
@@ -106,25 +112,25 @@ void chatWindow::draw_flist()
     this->win_refresh(this->flist);
 }
 
-int main()
-{
-    chatWindow _win;
-    _win.init();
+/* int main() */
+/* { */
+/*     chatWindow _win; */
+/*     _win.init(); */
 
-    _win.draw_header();
-    /* sleep(1); */
-    _win.draw_output();
-    /* sleep(1); */
-    _win.draw_input();
-    /* sleep(1); */
-    _win.draw_flist();
-    /* sleep(1); */
+/*     _win.draw_header(); */
+/*     /1* sleep(1); *1/ */
+/*     _win.draw_output(); */
+/*     /1* sleep(1); *1/ */
+/*     _win.draw_input(); */
+/*     /1* sleep(1); *1/ */
+/*     _win.draw_flist(); */
+/*     /1* sleep(1); *1/ */
 
-    std::string str;
-    str = "Welcome Chat System";
+/*     std::string str; */
+/*     str = "Welcome Chat System"; */
 
-    _win.put_str_to_header(str); 
-    /* sleep(1); */
+/*     _win.put_str_to_header(str); */ 
+/*     /1* sleep(1); *1/ */
 
-    return 0;
-}
+/*     return 0; */
+/* } */

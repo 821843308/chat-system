@@ -16,7 +16,9 @@ public:
     void win_refresh(WINDOW *_win);
     void put_str_to_header(std::string &_str);
     void put_str_to_win(WINDOW *_win,int y,int x,std::string &_str);
+
     void get_str_from_win(WINDOW *_win,std::string &_str);
+    void clear_win_line(WINDOW *_win,int begin,int num);
 
     ~chatWindow();
 
@@ -25,9 +27,7 @@ public:
     void draw_input();
     void draw_flist();
 
-    
-
-private:
+public:
     WINDOW *header;
     WINDOW *output;
     WINDOW *input;
